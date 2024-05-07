@@ -241,34 +241,15 @@ public class Driver1 {
             } else if (command.equals("find-the-best-student")) {
                 String year = inputArr[1];
                 String semester = inputArr[2];
-                // String[] yearParts = year.split("/");            
-                // Menyimpan mahasiswa dengan NIM genap atau ganjil
-                List<String> selectedStudents = new ArrayList<>();
-            
-                for (Enrollment enrollment : enrollments) {
-                    if (enrollment.getYear().equals(year) && enrollment.getSemester().equals(semester)) {
-                        String studentId = enrollment.getId();
-                        String lastTwoDigits = studentId.substring(studentId.length() - 2);
-                        int studentNumber = Integer.parseInt(lastTwoDigits);
-            
-                        // Memeriksa apakah NIM genap atau ganjil
-                        if ((studentNumber % 2 == 0 && inputArr[2].equals("even")) ||
-                            (studentNumber % 2 != 0 && inputArr[2].equals("odd"))) {
-                            selectedStudents.add(studentId);
-                        }
+
+                for (Enrollment enrollment : enrollments){
+                    if (enrollment.getYear().equals(year) && enrollment.getSemester().equals(semester)){
+                    
+                        System.out.println(enrollment.getId() + "|" + enrollment.getGrade() + "/" + enrollment.getGrade());
                     }
+
                 }
-            
-                // Menampilkan nilai mahasiswa terpilih
-                for (String studentId : selectedStudents) {
-                    for (Enrollment enrollment : enrollments) {
-                        if (enrollment.getYear().equals(year) && enrollment.getSemester().equals(semester) &&
-                            enrollment.getId().equals(studentId)) {
-                            System.out.println(enrollment.getId() + "|" + enrollment.getGrade() + "/" + enrollment.getGrade());
-                            break; // Menghindari duplikasi
-                        }
-                    }
-                }
+
             } else if (command.equals("add-best-student")) {
                 String best = inputArr[1];
             }
