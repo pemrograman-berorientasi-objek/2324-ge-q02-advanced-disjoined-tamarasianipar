@@ -242,12 +242,12 @@ public class Driver1 {
                 String year = inputArr[1];
                 String semester = inputArr[2];
 
-                for (Enrollment enrollment : enrollments){
-                    if (enrollment.getYear().equals(year) && enrollment.getSemester().equals(semester)){
-                        System.out.println(enrollment.getId() + "|" + enrollment.getSemester() + "/" + enrollment.getSemester());
-                    }
+                // for (Enrollment enrollment : enrollments){
+                //     if (enrollment.getYear().equals(year) && enrollment.getSemester().equals(semester)){
+                //         System.out.println(enrollment.getId() + "|" + enrollment.getSemester() + "/" + enrollment.getSemester());
+                //     }
 
-                }
+                // }
 
             } else if (command.equals("add-best-student")) {
                 String best = inputArr[1];
