@@ -242,9 +242,14 @@ public class Driver1 {
                 String year = inputArr[1];
                 String semester = inputArr[2];
 
+                Collections.sort(courseOpenings, new Comparator<CourseOpening>() {
+                    @Override
+                    public int compare(CourseOpening s1, CourseOpening s2) {
+                        return (s2.getSemester().compareTo(s1.getSemester()));
+                    }
+                });
                 for (Enrollment enrollment : enrollments){
                     if (enrollment.getYear().equals(year) && enrollment.getSemester().equals(semester)){
-                    
                         System.out.println(enrollment.getId() + "|" + enrollment.getGrade() + "/" + enrollment.getGrade());
                     }
 
@@ -253,6 +258,7 @@ public class Driver1 {
             } else if (command.equals("add-best-student")) {
                 String best = inputArr[1];
             }
+
         }
         sc.close();
     }
