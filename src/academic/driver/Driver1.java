@@ -249,9 +249,10 @@ public class Driver1 {
 
                 // }
 
-            } else if (command.equals("add-best-student")) {
-                String best = inputArr[1];
-            }
+            } 
+            // else if (command.equals("add-best-student")) {
+            //     String best = inputArr[1];
+            // }
 
         }
         sc.close();
