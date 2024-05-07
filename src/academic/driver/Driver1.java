@@ -1,4 +1,5 @@
 package academic.driver;
+
 import java.util.*;
 import academic.model.*;
 
@@ -41,7 +42,7 @@ public class Driver1 {
                 }
 
                 // for (CourseOpening courseOpening : courseOpenings) {
-                //     System.out.println(courseOpening);
+                // System.out.println(courseOpening);
                 // }
 
                 break;
@@ -62,18 +63,18 @@ public class Driver1 {
 
                 // menambahkan dosen pengampu ke matakuliah
                 // for (String initial : lecturerInitials) {
-                //     for (Lecturer lecturer : lecturers) {
-                //         if (lecturer.getInitial().equals(initial)) {
-                //             course.addLecturer(lecturer);
-                //         }
-                //     }
+                // for (Lecturer lecturer : lecturers) {
+                // if (lecturer.getInitial().equals(initial)) {
+                // course.addLecturer(lecturer);
+                // }
+                // }
                 // }
             } else if (command.equals("student-add")) {
                 String id = inputArr[1];
                 String name = inputArr[2];
                 String year = inputArr[3];
                 String studyProgram = inputArr[4];
-                
+
                 boolean isExist = false;
                 for (Student student : students) {
                     if (student.getId().equals(id)) {
@@ -85,8 +86,7 @@ public class Driver1 {
                     Student student = new Student(id, name, year, studyProgram);
                     students.add(student);
                 }
-         
-                
+
             } else if (command.equals("enrollment-add")) {
                 String code = inputArr[1];
                 String id = inputArr[2];
@@ -94,7 +94,7 @@ public class Driver1 {
                 String semester = inputArr[4];
                 Enrollment enrollment = new Enrollment(code, id, year, semester);
                 enrollments.add(enrollment);
-                
+
             } else if (command.equals("lecturer-add")) {
                 String id = inputArr[1];
                 String name = inputArr[2];
@@ -119,9 +119,9 @@ public class Driver1 {
                 String year = inputArr[3];
                 String semester = inputArr[4];
                 String grade = inputArr[5];
-                for (Enrollment enrollment : enrollments){
-                    if (enrollment.getCode().equals(code) && enrollment.getId().equals(id) && 
-                            enrollment.getYear().equals(year) && enrollment.getSemester().equals(semester)){
+                for (Enrollment enrollment : enrollments) {
+                    if (enrollment.getCode().equals(code) && enrollment.getId().equals(id) &&
+                            enrollment.getYear().equals(year) && enrollment.getSemester().equals(semester)) {
                         enrollment.setGrade(grade);
                     }
                 }
@@ -144,7 +144,7 @@ public class Driver1 {
                 String grade = inputArr[5];
                 boolean found = false;
                 int foundIndex = -1;
-            
+
                 // Mencari enrollment yang sesuai
                 for (int i = 0; i < enrollments.size(); i++) {
                     Enrollment enrollment = enrollments.get(i);
@@ -155,32 +155,34 @@ public class Driver1 {
                         break;
                     }
                 }
-            
-                // Jika enrollment ditemukan, update grade dan set sebagai remedial
-                    if (found) {
-                        
-                        Enrollment enrollment = enrollments.get(foundIndex);
-                        if (enrollment.getCode().equals(code) && enrollment.getId().equals(id) &&
-                            enrollment.getYear().equals(year) && enrollment.getSemester().equals(semester) && !enrollment.getGrade().equals("None")){
-                                if (!enrollment.Remedial()) {
-                                    enrollment.setPrevGrade(enrollment.getGrade());
-                                    enrollment.setGrade(grade);
-                                    enrollment.setRemedial(true);
-                                }
-                            }
 
-                    } else {
-                        // Jika tidak ada enrollment yang sesuai, tambahkan enrollment baru sebagai remedial
-                        Enrollment remedialEnrollment = new Enrollment(code, id, year, semester);
-                        remedialEnrollment.setGrade(grade);
-                        remedialEnrollment.setRemedial(true);
-                        enrollments.add(remedialEnrollment);
+                // Jika enrollment ditemukan, update grade dan set sebagai remedial
+                if (found) {
+
+                    Enrollment enrollment = enrollments.get(foundIndex);
+                    if (enrollment.getCode().equals(code) && enrollment.getId().equals(id) &&
+                            enrollment.getYear().equals(year) && enrollment.getSemester().equals(semester)
+                            && !enrollment.getGrade().equals("None")) {
+                        if (!enrollment.Remedial()) {
+                            enrollment.setPrevGrade(enrollment.getGrade());
+                            enrollment.setGrade(grade);
+                            enrollment.setRemedial(true);
+                        }
                     }
+
+                } else {
+                    // Jika tidak ada enrollment yang sesuai, tambahkan enrollment baru sebagai
+                    // remedial
+                    Enrollment remedialEnrollment = new Enrollment(code, id, year, semester);
+                    remedialEnrollment.setGrade(grade);
+                    remedialEnrollment.setRemedial(true);
+                    enrollments.add(remedialEnrollment);
+                }
             } else if (command.equals("course-open")) {
                 String code = inputArr[1];
                 String year = inputArr[2];
                 String semester = inputArr[3];
-                int credit =0;
+                int credit = 0;
                 String name = "";
                 String pGrade = "";
                 String[] lecturerInitialsArr = inputArr[4].split(",");
@@ -202,9 +204,6 @@ public class Driver1 {
                     }
                 }
 
-        
-
-
                 CourseOpening courseOpening = new CourseOpening(code, name, credit, pGrade, year, semester);
                 courseOpenings.add(courseOpening);
 
@@ -225,30 +224,56 @@ public class Driver1 {
                         return (s2.getSemester().compareTo(s1.getSemester()));
                     }
                 });
-            
+
                 for (CourseOpening courseOpening : courseOpenings) {
                     if (courseOpening.getCode().equals(code)) {
                         System.out.println(courseOpening);
                         for (Enrollment enrollment : enrollments) {
-                            if (enrollment.getCode().equals(courseOpening.getCode()) && enrollment.getYear().equals(courseOpening.getYear()) &&
+                            if (enrollment.getCode().equals(courseOpening.getCode())
+                                    && enrollment.getYear().equals(courseOpening.getYear()) &&
                                     enrollment.getSemester().equals(courseOpening.getSemester())) {
                                 System.out.println(enrollment);
                             }
                         }
                     }
                 }
-        
+
+            } else if (command.equals("find-the-best-student")) {
+                String year = inputArr[1];
+                String semester = inputArr[2];
+                // String[] yearParts = year.split("/");            
+                // Menyimpan mahasiswa dengan NIM genap atau ganjil
+                List<String> selectedStudents = new ArrayList<>();
             
-          
+                for (Enrollment enrollment : enrollments) {
+                    if (enrollment.getYear().equals(year) && enrollment.getSemester().equals(semester)) {
+                        String studentId = enrollment.getId();
+                        String lastTwoDigits = studentId.substring(studentId.length() - 2);
+                        int studentNumber = Integer.parseInt(lastTwoDigits);
             
-        } else if (command.equals("find-the-best-student")){
-            String year = inputArr[1];
-            String semester = inputArr[2];
+                        // Memeriksa apakah NIM genap atau ganjil
+                        if ((studentNumber % 2 == 0 && inputArr[2].equals("even")) ||
+                            (studentNumber % 2 != 0 && inputArr[2].equals("odd"))) {
+                            selectedStudents.add(studentId);
+                        }
+                    }
+                }
             
+                // Menampilkan nilai mahasiswa terpilih
+                for (String studentId : selectedStudents) {
+                    for (Enrollment enrollment : enrollments) {
+                        if (enrollment.getYear().equals(year) && enrollment.getSemester().equals(semester) &&
+                            enrollment.getId().equals(studentId)) {
+                            System.out.println(enrollment.getId() + "|" + enrollment.getGrade() + "/" + enrollment.getGrade());
+                            break; // Menghindari duplikasi
+                        }
+                    }
+                }
+            } else if (command.equals("add-best-student")) {
+                String best = inputArr[1];
+            }
         }
-        
-    }
-    sc.close(); 
+        sc.close();
     }
 
     // Metode untuk menghitung IPK (GPA)
@@ -276,7 +301,7 @@ public class Driver1 {
     public static float calculateGPA(Student student, List<Enrollment> enrollments, List<Course> courses) {
         List<String> uniqueCourses = new ArrayList<>();
         List<Enrollment> latestEnrollments = new ArrayList<>();
-    
+
         // Menyimpan nilai terbaru untuk setiap mata kuliah
         for (Enrollment enrollment : enrollments) {
             if (enrollment.getId().equals(student.getId())) {
@@ -287,10 +312,10 @@ public class Driver1 {
                 latestEnrollments.add(enrollment);
             }
         }
-    
+
         float totalGradePoint = 0;
         int totalCredit = 0;
-    
+
         // Menghitung total nilai berdasarkan nilai terbaru
         for (String code : uniqueCourses) {
             String latestGrade = "None";
@@ -299,7 +324,7 @@ public class Driver1 {
                     latestGrade = enrollment.getGrade();
                 }
             }
-    
+
             for (Course course : courses) {
                 if (course.getCode().equals(code)) {
                     float gradePoint = convertGradeToPoint(latestGrade);
@@ -309,17 +334,17 @@ public class Driver1 {
                 }
             }
         }
-    
+
         if (totalCredit == 0) {
             return 0; // Menghindari pembagian dengan nol
         }
-    
+
         return totalGradePoint / totalCredit; // Mengembalikan IPK
     }
-    
+
     public static int calculateTotalCredit(String studentId, List<Course> courses, List<Enrollment> enrollments) {
         List<String> uniqueCourseCodes = new ArrayList<>();
-        
+
         for (Enrollment enrollment : enrollments) {
             if (enrollment.getId().equals(studentId)) {
                 String code = enrollment.getCode();
@@ -328,9 +353,9 @@ public class Driver1 {
                 }
             }
         }
-        
+
         int totalCredit = 0;
-        
+
         for (String code : uniqueCourseCodes) {
             for (Course course : courses) {
                 if (course.getCode().equals(code)) {
@@ -339,9 +364,8 @@ public class Driver1 {
                 }
             }
         }
-        
+
         return totalCredit;
     }
-    
-}
 
+}
